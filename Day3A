@@ -1,0 +1,43 @@
+import random
+import select
+import time
+
+
+def password(): 
+    count = 0 
+    currentTime = float(time.time()) 
+    passwordList = ["something", "password", "qwerty", "m42?Cd", "no"] 
+    passwordNum = random.randint(0, 4) 
+    password = passwordList[passwordNum] 
+    with open("password.txt", "r") as file:
+        check = file.readline()
+        initialTime = file.readline()
+        if initialTime=="":
+            initialTime==0
+    if int(check)==1 and (currentTime-float(initialTime))<300:
+        print("You are still locked")
+        print("Please try again in", int(300-(currentTime-float(initialTime))), "seconds.")
+        quit()
+    print("The randomised password is No.", passwordNum+1) #Prints a string to let the user know which password was randomly selected
+    while count<5:
+        inp = input("Enter the Password: ")
+        if inp==password:
+            print("Access Granted")
+            print()
+            f = open("password.txt", "w")
+            f.write("0\n0")
+            f.close()
+            select()
+        elif (count+1)==5:
+            print("You have been locked")
+            print("Please try again in 5 minutes")
+            f = open("password.txt", "w")
+            f.write("1\n")
+            f.write(str(currentTime))
+            f.close()
+            quit()
+        else:
+            count+=1
+            print("Incorrect Password")
+            print("You have", 5-count, "tries left.")
+            continue
